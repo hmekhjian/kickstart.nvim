@@ -230,6 +230,47 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
+ {
+    'abecodes/tabout.nvim',
+    lazy = false, -- You likely want this to load immediately
+    config = function()
+      require('tabout').setup {
+        tabkey = '<Tab>',
+        backwards_tabkey = '<S-Tab>',
+        act_as_tab = true,
+        act_as_shift_tab = false,
+        default_tab = '<C-t>',
+        default_shift_tab = '<C-d>',
+        enable_backwards = true,
+        completion = false,
+        tabouts = {
+          { open = "'", close = "'" },
+          { open = '"', close = '"' },
+          { open = '`', close = '`' },
+          { open = '(', close = ')' },
+          { open = '[', close = ']' },
+          { open = '{', close = '}' },
+        },
+        ignore_beginning = true,
+        exclude = {},
+      }
+    end,
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'L3MON4D3/LuaSnip',
+      'hrsh7th/nvim-cmp',
+    },
+    opt = true, -- Consider if this plugin should be optional
+    event = 'InsertCharPre',
+    priority = 1000,
+  },
+  {
+    'L3MON4D3/LuaSnip',
+    keys = function()
+      -- Disable default tab keybinding in LuaSnip
+      return {}
+    end,
+  },
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -269,7 +310,7 @@ require('lazy').setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-  { -- Useful plugin to show you pending keybinds.
+  {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -315,7 +356,7 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
-        { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
+        { '<leader>c', group = '[C]ode',     mode = { 'n', 'x' } },
         { '<leader>d', group = '[D]ocument' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
@@ -355,7 +396,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -449,10 +490,10 @@ require('lazy').setup({
       'TmuxNavigatorProcessList',
     },
     keys = {
-      { '<c-h>', '<cmd><C-U>TmuxNavigateLeft<cr>' },
-      { '<c-j>', '<cmd><C-U>TmuxNavigateDown<cr>' },
-      { '<c-k>', '<cmd><C-U>TmuxNavigateUp<cr>' },
-      { '<c-l>', '<cmd><C-U>TmuxNavigateRight<cr>' },
+      { '<c-h>',  '<cmd><C-U>TmuxNavigateLeft<cr>' },
+      { '<c-j>',  '<cmd><C-U>TmuxNavigateDown<cr>' },
+      { '<c-k>',  '<cmd><C-U>TmuxNavigateUp<cr>' },
+      { '<c-l>',  '<cmd><C-U>TmuxNavigateRight<cr>' },
       { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
     },
   },
@@ -470,7 +511,7 @@ require('lazy').setup({
       },
     },
   },
-  { 'Bilal2453/luvit-meta', lazy = true },
+  { 'Bilal2453/luvit-meta',     lazy = true },
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
@@ -482,7 +523,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',       opts = {} },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -635,58 +676,58 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers =
-        {
-          -- clangd = {},
-          -- gopls = {},
-          pylsp = {
-            settings = {
-              pylsp = {
-                plugins = {
-                  pyflakes = { enabled = false },
-                  pycodestyle = { enabled = false },
-                  autopep8 = { enabled = false },
-                  yapf = { enabled = false },
-                  mccabe = { enabled = false },
-                  pylsp_mypy = { enabled = false },
-                  pylsp_black = { enabled = false },
-                  pylsp_isort = { enabled = false },
+          {
+            -- clangd = {},
+            -- gopls = {},
+            pylsp = {
+              settings = {
+                pylsp = {
+                  plugins = {
+                    pyflakes = { enabled = false },
+                    pycodestyle = { enabled = false },
+                    autopep8 = { enabled = false },
+                    yapf = { enabled = false },
+                    mccabe = { enabled = false },
+                    pylsp_mypy = { enabled = false },
+                    pylsp_black = { enabled = false },
+                    pylsp_isort = { enabled = false },
+                  },
                 },
               },
             },
-          },
-          -- pyright = {},
-          -- rust_analyzer = {},
-          -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-          --
-          -- Some languages (like typescript) have entire language plugins that can be useful:
-          --    https://github.com/pmizio/typescript-tools.nvim
-          --
-          -- But for many setups, the LSP (`ts_ls`) will work just fine
-          -- ts_ls = {},
-          --
+            -- pyright = {},
+            -- rust_analyzer = {},
+            -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
+            --
+            -- Some languages (like typescript) have entire language plugins that can be useful:
+            --    https://github.com/pmizio/typescript-tools.nvim
+            --
+            -- But for many setups, the LSP (`ts_ls`) will work just fine
+            -- ts_ls = {},
+            --
 
-          lua_ls = {
-            -- cmd = { ... },
-            -- filetypes = { ... },
-            -- capabilities = {},
-            settings = {
-              Lua = {
-                completion = {
-                  callSnippet = 'Replace',
+            lua_ls = {
+              -- cmd = { ... },
+              -- filetypes = { ... },
+              -- capabilities = {},
+              settings = {
+                Lua = {
+                  completion = {
+                    callSnippet = 'Replace',
+                  },
+                  -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+                  -- diagnostics = { disable = { 'missing-fields' } },
                 },
-                -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-                -- diagnostics = { disable = { 'missing-fields' } },
               },
             },
           },
-        },
-        -- Ensure the servers and tools above are installed
-        --  To check the current status of installed tools and/or manually install
-        --  other tools, you can run
-        --    :Mason
-        --
-        --  You can press `g?` for help in this menu.
-        require('mason').setup()
+          -- Ensure the servers and tools above are installed
+          --  To check the current status of installed tools and/or manually install
+          --  other tools, you can run
+          --    :Mason
+          --
+          --  You can press `g?` for help in this menu.
+          require('mason').setup()
 
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
